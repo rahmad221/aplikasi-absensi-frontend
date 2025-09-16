@@ -1,50 +1,44 @@
 // src/components/AbsensiKamera.js
 "use client";
 
-import { useState, useRef, useCallback, useEffect } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import Webcam from 'react-webcam';
 import api from '../lib/api';
 
-export default function AbsensiKamera() {
+// Menerima props dari halaman induk
+export default function AbsensiKamera({ statusAbsensi, onSuccess }) {
   const webcamRef = useRef(null);
   const [imgSrc, setImgSrc] = useState(null);
-  const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
 
-  // Ambil data user dari localStorage saat komponen dimuat
-  useEffect(() => {
-    const userData = JSON.parse(localStorage.getItem('user'));
-    setUser(userData);
-  }, []);
+  const { next_action, data_absensi, user } = statusAbsensi;
 
-  // Fungsi untuk mengambil gambar
+  // Membuat teks tombol lebih dinamis
+  const getButtonText = () => {
+    switch (next_action) {
+      case 'masuk': return 'Absen Masuk';
+      case 'mulai_istirahat': return 'Mulai Istirahat';
+      case 'selesai_istirahat': return 'Selesai Istirahat';
+      case 'pulang': return 'Absen Pulang';
+      default: return 'Selesai';
+    }
+  };
+
   const capture = useCallback(() => {
     const imageSrc = webcamRef.current.getScreenshot();
     setImgSrc(imageSrc);
   }, [webcamRef, setImgSrc]);
 
-  // Fungsi untuk mengirim absensi ke backend
   const kirimAbsensi = async () => {
-    if (!imgSrc) {
-      setError('Silakan ambil foto terlebih dahulu.');
-      return;
-    }
-
+    if (!imgSrc) return;
     setLoading(true);
     setError('');
-    setSuccess('');
 
     try {
-      // API endpoint untuk absensi (akan kita buat di backend)
-      const response = await api.post('/api/absensi/masuk', {
-        foto: imgSrc, // Mengirim gambar dalam format base64
-      });
-      
-      setSuccess(response.data.message);
-      setImgSrc(null); // Reset gambar setelah berhasil
-
+      const response = await api.post('/api/absensi/rekam', { foto: imgSrc });
+      onSuccess(response.data.message); // Kirim pesan sukses ke halaman induk
+      setImgSrc(null);
     } catch (err) {
       setError(err.response?.data?.message || 'Gagal mengirim absensi.');
     } finally {
@@ -52,10 +46,20 @@ export default function AbsensiKamera() {
     }
   };
 
+  // Tampilan jika absensi sudah selesai
+  if (next_action === 'selesai') {
+    return (
+      <div className="w-full max-w-sm mx-auto text-center bg-white p-6 rounded-lg shadow-md">
+        <h2 className="text-xl font-bold text-green-600">Terima Kasih!</h2>
+        <p className="text-gray-600 mt-2">Anda sudah menyelesaikan semua absensi untuk hari ini.</p>
+      </div>
+    );
+  }
+
   return (
     <div className="w-full max-w-sm mx-auto flex flex-col items-center bg-white p-6 rounded-lg shadow-md">
-      <h2 className="text-lg font-bold text-gray-700 mb-2">Absen Masuk</h2>
-      <p className="text-sm text-gray-500 mb-4">NIK: {user?.nik || 'Loading...'}</p>
+      <h2 className="text-lg font-bold text-gray-700 mb-2">{getButtonText()}</h2>
+      <p className="text-sm text-gray-500 mb-4">NIK: {user?.nik || '...'}</p>
 
       <div className="w-full aspect-square bg-gray-200 rounded-lg overflow-hidden mb-4">
         {imgSrc ? (
@@ -71,11 +75,8 @@ export default function AbsensiKamera() {
         )}
       </div>
 
-      {/* Menampilkan pesan error atau sukses */}
       {error && <div className="p-3 mb-4 w-full text-sm text-center text-red-800 bg-red-100 rounded-lg">{error}</div>}
-      {success && <div className="p-3 mb-4 w-full text-sm text-center text-green-800 bg-green-100 rounded-lg">{success}</div>}
 
-      {/* Tombol Aksi */}
       <div className="w-full flex justify-center gap-4">
         {imgSrc ? (
           <>

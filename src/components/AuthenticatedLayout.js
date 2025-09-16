@@ -6,21 +6,25 @@ import { usePathname } from 'next/navigation';
 import HomeIcon from './icons/HomeIcon';
 import CameraIcon from './icons/CameraIcon';
 import DocumentIcon from './icons/DocumentIcon';
+import UserIcon from './icons/UserIcon'; // <-- Import UserIcon
+import BellIcon from './icons/BellIcon';
 
 export default function AuthenticatedLayout({ children }) {
   const pathname = usePathname();
 
   const navItems = [
     { href: '/dashboard', icon: HomeIcon, label: 'Dashboard' },
-    { href: '/absensi', icon: CameraIcon, label: 'Absensi' },
     { href: '/laporan', icon: DocumentIcon, label: 'Laporan' },
+    { href: '/absensi', icon: CameraIcon, label: 'Absensi' },
+    { href: '/notifikasi', icon: BellIcon, label: 'Notifikasi' }, // Tambah Notifikasi
+    { href: '/profile', icon: UserIcon, label: 'Profil' },
   ];
 
   return (
     <div className="min-h-screen bg-slate-50">
       <div className="md:max-w-md md:mx-auto md:min-h-screen md:bg-slate-50 md:shadow-lg flex flex-col">
         {/* Konten Utama */}
-        <main className="flex-grow p-6 pb-24">
+        <main className="flex-grow p-4 pb-24">
           {children}
         </main>
 
