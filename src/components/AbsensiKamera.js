@@ -4,6 +4,7 @@
 import { useState, useRef, useCallback } from 'react';
 import Webcam from 'react-webcam';
 import api from '../lib/api';
+import Image from 'next/image';
 
 // Menerima props dari halaman induk
 export default function AbsensiKamera({ statusAbsensi, onSuccess }) {
@@ -63,7 +64,7 @@ export default function AbsensiKamera({ statusAbsensi, onSuccess }) {
 
       <div className="w-full aspect-square bg-gray-200 rounded-lg overflow-hidden mb-4">
         {imgSrc ? (
-          <img src={imgSrc} alt="Hasil capture" className="w-full h-full object-cover" />
+          <Image src={imgSrc} alt="Hasil capture" className="w-full h-full object-cover" />
         ) : (
           <Webcam
             audio={false}

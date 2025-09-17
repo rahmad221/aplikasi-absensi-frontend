@@ -81,7 +81,7 @@ export default function LaporanPage() {
       {/* Hasil Laporan */}
       <div className="bg-white p-4 rounded-lg shadow-md">
         {error && <p className="text-red-500 text-center">{error}</p>}
-        {laporan.length === 0 && !loading && <p className="text-center text-gray-500">Silakan pilih rentang tanggal dan klik "Tampilkan Laporan".</p>}
+        <p className="text-center text-gray-500">{'Silakan pilih rentang tanggal dan klik "Tampilkan Laporan".'}</p>
         
         <div className="space-y-4">
           {laporan.map((item) => (
