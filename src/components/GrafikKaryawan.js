@@ -34,7 +34,7 @@ export default function GrafikKaryawan() {
     const fetchStatistik = async () => {
       try {
         const response = await api.get('/api/statistik');
-        const totalKaryawan = response.data.data.total_karyawan;
+        const totalKaryawan = response.data?.data?.total_karyawan ?? 0;
 
         setChartData({
           labels: ['Karyawan'],
@@ -50,6 +50,7 @@ export default function GrafikKaryawan() {
         });
       } catch (error) {
         console.error("Gagal mengambil data statistik:", error);
+        setError("Tidak dapat memuat data. Silakan coba lagi nanti."); 
       } finally {
         setLoading(false);
       }
