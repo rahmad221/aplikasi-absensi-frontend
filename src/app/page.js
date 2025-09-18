@@ -47,11 +47,12 @@ export default function LoginPage() {
       console.log('Login response:', response.data);
 
       // 3. Simpan token dan data user jika berhasil
-      localStorage.setItem('token', response.data.access_token);
-      localStorage.setItem('user', JSON.stringify(response.data.data));
+      localStorage.setItem('token', response.data.token);
+      localStorage.setItem('user', JSON.stringify(response.data.user));
 
       // 4. Arahkan ke halaman dashboard
       router.push('/dashboard');
+      // console.log(response.data.user);
 
     } catch (err) {
       // 5. Tampilkan error jika gagal
