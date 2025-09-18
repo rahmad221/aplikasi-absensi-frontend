@@ -31,6 +31,15 @@ export default function RegisterPage() {
     setErrors({});
     setSuccessMessage("");
 
+    // Pengecekan password di sisi klien
+    if (formData.password !== formData.password_confirmation) {
+      setErrors({
+        password: ["Konfirmasi password tidak cocok."],
+      });
+      setLoading(false);
+      return; // Menghentikan proses jika password tidak cocok
+    }
+
     try {
       const response = await api.post("/api/register", formData);
 

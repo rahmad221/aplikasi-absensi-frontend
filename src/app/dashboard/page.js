@@ -37,11 +37,6 @@ export default function DashboardPage() {
     }
   }, [router]);
   
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    router.push('/');
-  };
 
   if (!user) {
     return <div className="flex items-center justify-center min-h-screen"><p>Loading...</p></div>;
