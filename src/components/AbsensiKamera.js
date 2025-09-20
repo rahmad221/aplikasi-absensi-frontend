@@ -1,4 +1,3 @@
-// src/components/AbsensiKamera.js
 "use client";
 
 import { useState, useRef, useCallback } from 'react';
@@ -27,8 +26,13 @@ export default function AbsensiKamera({ statusAbsensi, onSuccess }) {
   };
 
   const capture = useCallback(() => {
-    const imageSrc = webcamRef.current.getScreenshot();
-    setImgSrc(imageSrc);
+    // FIX 2: Menambahkan pengecekan untuk memastikan webcamRef sudah siap
+    if (webcamRef.current) {
+        const imageSrc = webcamRef.current.getScreenshot();
+        setImgSrc(imageSrc);
+    } else {
+        console.error("Referensi webcam belum siap.");
+    }
   }, [webcamRef, setImgSrc]);
 
   const kirimAbsensi = async () => {
@@ -62,9 +66,16 @@ export default function AbsensiKamera({ statusAbsensi, onSuccess }) {
       <h2 className="text-lg font-bold text-gray-700 mb-2">{getButtonText()}</h2>
       <p className="text-sm text-gray-500 mb-4">NIK: {user?.nik || '...'}</p>
 
-      <div className="w-full aspect-square bg-gray-200 rounded-lg overflow-hidden mb-4">
+      {/* FIX 3: Menambahkan `relative` pada container Image */}
+      <div className="w-full aspect-square bg-gray-200 rounded-lg overflow-hidden mb-4 relative">
         {imgSrc ? (
-          <Image src={imgSrc} alt="Hasil capture" className="w-full h-full object-cover" />
+          // FIX 3: Menggunakan prop `fill` untuk Image
+          <Image 
+            src={imgSrc} 
+            alt="Hasil capture" 
+            fill
+            className="object-cover" 
+          />
         ) : (
           <Webcam
             audio={false}
@@ -72,6 +83,8 @@ export default function AbsensiKamera({ statusAbsensi, onSuccess }) {
             screenshotFormat="image/jpeg"
             className="w-full h-full object-cover"
             videoConstraints={{ facingMode: "user" }}
+            // FIX 1: Menambahkan prop `mirrored={false}`
+            mirrored={false}
           />
         )}
       </div>
