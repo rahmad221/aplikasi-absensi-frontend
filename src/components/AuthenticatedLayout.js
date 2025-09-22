@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation';
 import HomeIcon from './icons/HomeIcon';
 import CameraIcon from './icons/CameraIcon';
 import DocumentIcon from './icons/DocumentIcon';
-import UserIcon from './icons/UserIcon'; // <-- Import UserIcon
+import UserIcon from './icons/UserIcon';
 import BellIcon from './icons/BellIcon';
 
 export default function AuthenticatedLayout({ children }) {
@@ -16,15 +16,18 @@ export default function AuthenticatedLayout({ children }) {
     { href: '/dashboard', icon: HomeIcon, label: 'Dashboard' },
     { href: '/laporan', icon: DocumentIcon, label: 'Laporan' },
     { href: '/absensi', icon: CameraIcon, label: 'Absensi' },
-    { href: '/notifikasi', icon: BellIcon, label: 'Notifikasi' }, // Tambah Notifikasi
+    { href: '/notifikasi', icon: BellIcon, label: 'Notifikasi' },
     { href: '/profile', icon: UserIcon, label: 'Profil' },
   ];
 
   return (
+    // Gunakan warna dasar abu-abu untuk area di luar container utama (di layar besar)
     <div className="min-h-screen bg-slate-50">
-      <div className="md:max-w-md md:mx-auto md:min-h-screen md:bg-slate-50 md:shadow-lg flex flex-col">
-        {/* Konten Utama */}
-        <main className="flex-grow p-4 pb-24">
+      {/* Container utama dengan gradien */}
+      <div className="md:max-w-md md:mx-auto md:min-h-screen md:shadow-lg flex flex-col">
+        
+        {/* Konten Utama: Hapus padding dari sini */}
+        <main className="flex-grow flex flex-col">
           {children}
         </main>
 
