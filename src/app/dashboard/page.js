@@ -51,7 +51,7 @@ export default function DashboardPage() {
         <div className="flex items-center space-x-4">
           {/* ↓↓↓ UBAH BAGIAN INI ↓↓↓ */}
           <div className="relative w-16 h-16 rounded-full overflow-hidden border-2 border-white flex-shrink-0">
-            <Image
+            <img
               src={user.imageUrl || 'https://i.pravatar.cc/150'}  // Pastikan path gambar Anda benar
               alt={user.nama}
               layout="fill" // Ini akan membuat gambar mengisi penuh wadah

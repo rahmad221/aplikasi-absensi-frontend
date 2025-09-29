@@ -51,7 +51,7 @@ export default function RegisterPage() {
       }, 3000);
     } catch (err) {
       setLoading(false);
-      console.error("Register error:", err.response ? err.response.data : err.message);
+      // console.error("Register error:", err.response ? err.response.data : err.message);
 
       if (err.response && err.response.status === 422) {
         setErrors(err.response.data.errors);
