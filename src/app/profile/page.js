@@ -13,12 +13,13 @@ const profileMenuItems = [
 export default function ProfilePage() {
   const [user, setUser] = useState(null);
   const router = useRouter();
-
+ 
   useEffect(() => {
     // Mengambil data user dari localStorage
     const userDataString = localStorage.getItem('user');
     if (userDataString) {
       setUser(JSON.parse(userDataString));
+      console.log(user);
     } else {
       // Jika tidak ada data user, kembali ke halaman login
       // Anda bisa juga memasukkan mock data di sini untuk development
