@@ -71,16 +71,16 @@ export default function AbsensiPage() {
                 <p className="font-bold text-lg">{formatTime(status.data_absensi?.jam_masuk)}</p>
               </div>
               <div className="text-center p-2 bg-gray-50 rounded">
-                <p className="text-gray-500">Pulang</p>
-                <p className="font-bold text-lg">{formatTime(status.data_absensi?.jam_pulang)}</p>
-              </div>
-              <div className="text-center p-2 bg-gray-50 rounded">
                 <p className="text-gray-500">Mulai Istirahat</p>
                 <p className="font-bold text-lg">{formatTime(status.data_absensi?.jam_mulai_istirahat)}</p>
               </div>
               <div className="text-center p-2 bg-gray-50 rounded">
                 <p className="text-gray-500">Selesai Istirahat</p>
                 <p className="font-bold text-lg">{formatTime(status.data_absensi?.jam_selesai_istirahat)}</p>
+              </div>
+              <div className="text-center p-2 bg-gray-50 rounded">
+                <p className="text-gray-500">Pulang</p>
+                <p className="font-bold text-lg">{formatTime(status.data_absensi?.jam_pulang)}</p>
               </div>
             </div>
           </div>

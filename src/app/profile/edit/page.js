@@ -23,7 +23,7 @@ export default function EditProfilePage() {
     if (userDataString) {
       const userData = JSON.parse(userDataString);
     //   console.log(userDataString);
-      setNama(userData.nama || "");
+      setNama(userData.name || "");
       setNoHp(userData.no_hp || "");
       setProfileImage(
         userData.imageUrl && userData.imageUrl !== ""

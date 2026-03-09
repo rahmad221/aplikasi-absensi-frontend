@@ -136,21 +136,21 @@ export default function LoginPage() {
               </button>
             </form>
             
-            <div className="text-center mt-4">
+            {/* <div className="text-center mt-4">
                 <Link href="/register" className="text-sm text-gray-600">
                 Belum punya akun? <span className="font-semibold text-blue-600">Daftar</span>
                 </Link>
-            </div>
+            </div> */}
             
             {/* Separator */}
-            <div className="flex items-center my-8">
+            {/* <div className="flex items-center my-8">
                 <hr className="flex-grow border-t border-gray-200" />
                 <span className="px-4 text-xs text-gray-500">Atau lebih cepat</span>
                 <hr className="flex-grow border-t border-gray-200" />
-            </div>
+            </div> */}
 
             {/* Tombol Social Login */}
-            <div className="space-y-3">
+            {/* <div className="space-y-3">
                 <button className="w-full flex items-center justify-center py-2.5 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors">
                     <GoogleIcon />
                     <span className="font-semibold text-gray-700 text-sm">Masuk dengan Google</span>
@@ -159,10 +159,9 @@ export default function LoginPage() {
                     <FacebookIcon />
                     <span className="font-semibold text-gray-700 text-sm">Masuk dengan Facebook</span>
                 </button>
-            </div>
+            </div> */}
         </main>
       </div>
     </div>
   );
 }
-

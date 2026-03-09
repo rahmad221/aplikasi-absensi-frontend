@@ -5,23 +5,21 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import AuthenticatedLayout from '../../components/AuthenticatedLayout';
 import GrafikKaryawan from '../../components/GrafikKaryawan';
-import Image from 'next/image';
+import Swal from 'sweetalert2'; // Opsional: Instal dengan 'npm install sweetalert2'
 import { 
   FiFileText, FiClock, FiActivity, FiCheckSquare, 
   FiCalendar, FiDollarSign, FiUser, FiHelpCircle 
 } from 'react-icons/fi';
 
-// Data untuk menu, agar mudah diubah dan dikelola
 const menuItems = [
-  // ... (data menu Anda tetap sama)
-  { label: 'Slip Gaji', icon: <FiFileText size={28} className="text-purple-600" />, href: '/slip-gaji' },
-  { label: 'Lembur', icon: <FiClock size={28} className="text-blue-500" />, href: '/lembur' },
-  { label: 'Riwayat', icon: <FiActivity size={28} className="text-green-500" />, href: '/riwayat' },
-  { label: 'Absensi', icon: <FiCheckSquare size={28} className="text-red-500" />, href: '/absensi' },
-  { label: 'Cuti', icon: <FiCalendar size={28} className="text-yellow-500" />, href: '/cuti' },
-  { label: 'Klaim', icon: <FiDollarSign size={28} className="text-indigo-500" />, href: '/klaim' },
-  { label: 'Data Diri', icon: <FiUser size={28} className="text-pink-500" />, href: '/profile' },
-  { label: 'Bantuan', icon: <FiHelpCircle size={28} className="text-gray-500" />, href: '/bantuan' },
+  { label: 'Slip Gaji', icon: <FiFileText size={28} className="text-purple-600" />, href: '/slip-gaji', isReady: false },
+  { label: 'Lembur', icon: <FiClock size={28} className="text-blue-500" />, href: '/lembur', isReady: false },
+  { label: 'Riwayat', icon: <FiActivity size={28} className="text-green-500" />, href: '/riwayat', isReady: false },
+  { label: 'Absensi', icon: <FiCheckSquare size={28} className="text-red-500" />, href: '/absensi', isReady: true },
+  { label: 'Cuti', icon: <FiCalendar size={28} className="text-yellow-500" />, href: '/cuti', isReady: false },
+  { label: 'Klaim', icon: <FiDollarSign size={28} className="text-indigo-500" />, href: '/klaim', isReady: false },
+  { label: 'Data Diri', icon: <FiUser size={28} className="text-pink-500" />, href: '/profile', isReady: true },
+  { label: 'Bantuan', icon: <FiHelpCircle size={28} className="text-gray-500" />, href: '/bantuan', isReady: false },
 ];
 
 export default function DashboardPage() {
@@ -36,11 +34,26 @@ export default function DashboardPage() {
       router.push('/');
     }
   }, [router]);
-  
 
-  if (!user) {
-    return <div className="flex items-center justify-center min-h-screen"><p>Loading...</p></div>;
-  }
+  // Fungsi untuk menangani klik menu
+  const handleMenuClick = (item) => {
+    if (!item.isReady) {
+      // Menggunakan SweetAlert2 agar lebih cantik, atau cukup alert() biasa
+      Swal.fire({
+        title: 'Sabar ya!',
+        text: `Fitur ${item.label} masih dalam tahap pengembangan.`,
+        icon: 'info',
+        confirmButtonColor: '#7e22ce', // Warna ungu sesuai tema Anda
+        confirmButtonText: 'Oke'
+      });
+      return;
+    }
+    router.push(item.href);
+  };
+
+  if (!user) return null;
+
+  const dataKaryawan = user.karyawan || {};
 
   return (
     <AuthenticatedLayout>
@@ -53,7 +66,7 @@ export default function DashboardPage() {
           <div className="relative w-16 h-16 rounded-full overflow-hidden border-2 border-white flex-shrink-0">
             <img
               src={user.imageUrl || 'https://i.pravatar.cc/150'}  // Pastikan path gambar Anda benar
-              alt={user.nama}
+              alt={user.name}
               layout="fill" // Ini akan membuat gambar mengisi penuh wadah
               objectFit="cover" // Ini akan memastikan gambar menutupi area tanpa distorsi, bisa saja terpotong sedikit
               className="rounded-full" // Tetap berikan rounded-full pada gambar itu sendiri
@@ -62,8 +75,8 @@ export default function DashboardPage() {
           {/* ↑↑↑ AKHIR BAGIAN PERUBAHAN ↑↑↑ */}
 
           <div>
-            <h1 className="text-xl font-bold text-white">{user.nama}</h1> 
-            <p className="text-sm text-purple-200">{user.no_hp}</p>
+            <h1 className="text-xl font-bold text-white">{dataKaryawan.name || user.name}</h1> 
+            <p className="text-sm text-purple-200">NIK: {dataKaryawan.nik || user.nik} | {user.email || 'Email'}</p>
           </div>
         </div>
       </header>
@@ -75,12 +88,16 @@ export default function DashboardPage() {
           {/* Grid Menu HR */}
           <div className="grid grid-cols-4 gap-4 mb-6">
             {menuItems.map((item) => (
-              <a key={item.label} href={item.href} className="flex flex-col items-center p-3 bg-white rounded-xl shadow-md hover:bg-gray-50 transition-all">
+              <button 
+                key={item.label} 
+                onClick={() => handleMenuClick(item)}
+                className="flex flex-col items-center p-3 bg-white rounded-xl shadow-md active:scale-95 transition-all outline-none"
+              >
                 <div className="flex items-center justify-center w-14 h-14 bg-purple-50 rounded-full mb-2">
                   {item.icon}
                 </div>
-                <span className="text-xs font-semibold text-center text-gray-600">{item.label}</span>
-              </a>
+                <span className="text-[10px] font-semibold text-center text-gray-600 leading-tight">{item.label}</span>
+              </button>
             ))}
           </div>
 

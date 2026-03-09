@@ -45,6 +45,8 @@ export default function ProfilePage() {
     );
   }
 
+  const dataKaryawan = user.karyawan || {};
+
   return (
     <AuthenticatedLayout>
       {/* Container utama dengan background dan padding responsif */}
@@ -64,8 +66,8 @@ export default function ProfilePage() {
             </div>
             <div>
               {/* Menampilkan nama dan email dari state user */}
-              <h1 className="text-xl sm:text-2xl font-bold text-gray-900">{user.nama || 'Nama Pengguna'}</h1>
-              <p className="text-sm sm:text-md text-gray-500">{user.no_hp || '0987654321'}</p>
+              <h1 className="text-xl sm:text-2xl font-bold text-gray-900">{dataKaryawan.name || user.name}</h1>
+              <p className="text-sm sm:text-md text-gray-500">{dataKaryawan.nik || user.nik}</p>
             </div>
           </div>
         </div>
