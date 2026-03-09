@@ -16,12 +16,26 @@ export default function AbsensiPage() {
   const fetchStatus = useCallback(async () => {
     setLoading(true);
     try {
-      const userData = JSON.parse(localStorage.getItem('user'));
+      const rawUserData = localStorage.getItem('user');
+      if (!rawUserData) {
+        setError('Sesi berakhir, silakan login kembali.');
+        return;
+      }
+      
+      const userData = JSON.parse(rawUserData);
+      
+      // Pastikan library api Anda mengirim header Accept: application/json
       const response = await api.get('/api/absensi/status');
+      
       setStatus({ ...response.data, user: userData });
       setError('');
     } catch (err) {
-      setError('Gagal memuat status absensi.');
+      // Cek jika error karena tidak terautentikasi (401)
+      if (err.response?.status === 401) {
+        setError('Sesi Anda telah habis. Silakan login ulang.');
+      } else {
+        setError('Gagal terhubung ke server.');
+      }
     } finally {
       setLoading(false);
     }
@@ -72,11 +86,11 @@ export default function AbsensiPage() {
               </div>
               <div className="text-center p-2 bg-gray-50 rounded">
                 <p className="text-gray-500">Mulai Istirahat</p>
-                <p className="font-bold text-lg">{formatTime(status.data_absensi?.jam_mulai_istirahat)}</p>
+                <p className="font-bold text-lg">{formatTime(status.data_absensi?.jam_mulai)}</p>
               </div>
               <div className="text-center p-2 bg-gray-50 rounded">
                 <p className="text-gray-500">Selesai Istirahat</p>
-                <p className="font-bold text-lg">{formatTime(status.data_absensi?.jam_selesai_istirahat)}</p>
+                <p className="font-bold text-lg">{formatTime(status.data_absensi?.jam_selesai)}</p>
               </div>
               <div className="text-center p-2 bg-gray-50 rounded">
                 <p className="text-gray-500">Pulang</p>

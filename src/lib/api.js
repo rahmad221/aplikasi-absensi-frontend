@@ -11,10 +11,11 @@ const api = axios.create({
 });
 
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token");
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
+  const token = localStorage.getItem('token');
+if (token) {
+  config.headers.Authorization = `Bearer ${token.trim()}`; // Tambahkan .trim()
+  config.headers.Accept = 'application/json'; // Tambahkan ini agar Laravel tahu ini API
+}
   return config;
 });
 

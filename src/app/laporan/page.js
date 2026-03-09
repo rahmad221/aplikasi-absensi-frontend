@@ -86,12 +86,12 @@ export default function LaporanPage() {
         <div className="space-y-4">
           {laporan.map((item) => (
             <div key={item.id} className="border-b pb-3 last:border-b-0">
-              <p className="font-bold text-gray-800">{formatDate(item.tanggal_absen)}</p>
+              <p className="font-bold text-gray-800">{formatDate(item.tanggal)}</p>
               <div className="grid grid-cols-2 gap-x-4 gap-y-2 mt-2 text-sm">
                 <p><strong>Masuk:</strong> <span className="font-semibold text-gray-600">{formatTime(item.jam_masuk)}</span></p>
                 <p><strong>Pulang:</strong> <span className="font-semibold text-gray-600">{formatTime(item.jam_pulang)}</span></p>
-                <p><strong>Mulai Istirahat:</strong> <span className="font-semibold text-gray-600">{formatTime(item.jam_mulai_istirahat)}</span></p>
-                <p><strong>Selesai Istirahat:</strong> <span className="font-semibold text-gray-600">{formatTime(item.jam_selesai_istirahat)}</span></p>
+                <p><strong>Mulai Istirahat:</strong> <span className="font-semibold text-gray-600">{formatTime(item.jam_mulai)}</span></p>
+                <p><strong>Selesai Istirahat:</strong> <span className="font-semibold text-gray-600">{formatTime(item.jam_selesai)}</span></p>
               </div>
             </div>
           ))}
