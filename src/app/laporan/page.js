@@ -21,7 +21,7 @@ export default function LaporanPage() {
     if (e) e.preventDefault();
     setLoading(true);
     setError('');
-    setLaporan([]);
+    // setLaporan([]); // Opsional: hapus jika ingin data lama tetap tampil saat loading
 
     try {
       const response = await api.get('/api/laporan', {
@@ -39,16 +39,14 @@ export default function LaporanPage() {
   };
 
   const formatTime = (time) => time ? time.substring(0, 5) : '-';
-  const formatDate = (date) => new Date(date).toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+  const formatDate = (date) => new Date(date).toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
 
   return (
     <AuthenticatedLayout>
-      {/* Header diubah menjadi di tengah dan berwarna biru */}
       <div className="bg-blue-600 p-4 rounded-lg shadow-md mb-6">
         <h1 className="text-2xl font-bold text-white text-center">Laporan Absensi</h1>
       </div>
       
-      {/* Form Filter Tanggal */}
       <form onSubmit={fetchLaporan} className="bg-white p-4 rounded-lg shadow-md mb-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="w-full">
@@ -72,28 +70,51 @@ export default function LaporanPage() {
             />
           </div>
         </div>
-        {/* Tombol dipindahkan ke bawah */}
         <button type="submit" disabled={loading} className="w-full mt-4 px-4 py-2 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 disabled:bg-gray-400">
           {loading ? 'Mencari...' : 'Tampilkan Laporan'}
         </button>
       </form>
 
-      {/* Hasil Laporan */}
-      <div className="bg-white p-4 rounded-lg shadow-md">
+      {/* Tambahkan pb-24 di sini agar data tidak tertutup navigasi bawah */}
+      <div className="bg-white p-4 rounded-lg shadow-md mb-20 pb-24"> 
         {error && <p className="text-red-500 text-center">{error}</p>}
-        {laporan.length === 0 && !loading && <p className="text-center text-gray-500">{'Silakan pilih rentang tanggal dan klik "Tampilkan Laporan".'}</p>}
+        {laporan.length === 0 && !loading && (
+          <p className="text-center text-gray-500">
+            {'Silakan pilih rentang tanggal dan klik "Tampilkan Laporan".'}
+          </p>
+        )}
         
-        <div className="space-y-4">
+        <div className="space-y-3">
           {laporan.map((item) => (
-            <div key={item.id} className="border-b pb-3 last:border-b-0">
-              <p className="font-bold text-gray-800">{formatDate(item.tanggal)}</p>
-              <div className="grid grid-cols-2 gap-x-4 gap-y-2 mt-2 text-sm">
-                <p><strong>Masuk:</strong> <span className="font-semibold text-gray-600">{formatTime(item.jam_masuk)}</span></p>
-                <p><strong>Pulang:</strong> <span className="font-semibold text-gray-600">{formatTime(item.jam_pulang)}</span></p>
-                <p><strong>Mulai Istirahat:</strong> <span className="font-semibold text-gray-600">{formatTime(item.jam_mulai)}</span></p>
-                <p><strong>Selesai Istirahat:</strong> <span className="font-semibold text-gray-600">{formatTime(item.jam_selesai)}</span></p>
+            <div key={item.id} className="border-b border-gray-100 pb-3 last:border-b-0 last:pb-0">
+            {/* Ukuran teks tanggal dibuat standar (text-base) */}
+            <p className="text-base font-bold text-gray-800">{formatDate(item.tanggal)}</p>
+            
+            {/* Grid 2 kolom, jarak antar baris dikecilkan (gap-y-1) */}
+            <div className="grid grid-cols-2 gap-x-4 gap-y-1 mt-2">
+              {/* Gunakan Flexbox untuk mensejajarkan label dan jam */}
+              <div className="flex items-baseline gap-2">
+                <p className="text-xs font-medium text-gray-500 w-24">Masuk</p>
+                {/* Ukuran teks jam diperkecil (text-sm) dan warnanya dipertegas */}
+                <p className="text-sm font-semibold text-gray-900">{formatTime(item.jam_masuk)}</p>
+              </div>
+              
+              <div className="flex items-baseline gap-2">
+                <p className="text-xs font-medium text-gray-500 w-24">Pulang</p>
+                <p className="text-sm font-semibold text-gray-900">{formatTime(item.jam_pulang)}</p>
+              </div>
+              
+              <div className="flex items-baseline gap-2">
+                <p className="text-xs font-medium text-gray-500 w-24">Mulai Istirahat</p>
+                <p className="text-sm font-semibold text-gray-900">{formatTime(item.jam_mulai)}</p>
+              </div>
+              
+              <div className="flex items-baseline gap-2">
+                <p className="text-xs font-medium text-gray-500 w-24">Selesai Istirahat</p>
+                <p className="text-sm font-semibold text-gray-900">{formatTime(item.jam_selesai)}</p>
               </div>
             </div>
+          </div>
           ))}
         </div>
       </div>
